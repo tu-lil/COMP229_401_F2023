@@ -8,7 +8,9 @@ mongoose.connect(config.mongoUri, {
   useNewUrlParser: true,
   // useCreateIndex: true,
   useUnifiedTopology: true,
-});
+}).then(() => {
+  console.log('connection to the mongo db is successful')
+})
 
 mongoose.connection.on("error", (error) => {
   console.log(error)
