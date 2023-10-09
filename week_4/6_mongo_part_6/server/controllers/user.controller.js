@@ -1,6 +1,6 @@
 import User from "../models/user.model.js";
 import extend from "lodash/extend.js";
-// import errorHandler from "./error.controller";
+import errorHandler from "./error.controller.js";
 
 const create = async (req, res) => {
   console.log("pppppp create req.body = ", req.body);
@@ -13,8 +13,7 @@ const create = async (req, res) => {
   } catch (err) {
     console.log("0000000000000 ", err);
     return res.status(400).json({
-      error: "i got error",
-      // error: errorHandler.getErrorMessage(err),
+      error: errorHandler.getErrorMessage(err),
     });
   }
 };
@@ -22,24 +21,21 @@ const create = async (req, res) => {
 const list = async (req, res) => {
   console.log("pppppp list");
   try {
-    let users = await User.find().select("name email updated created");
+    let users = await User.find().select("name");
     res.json(users);
   } catch (err) {
     return res.status(400).json({
-      // error: errorHandler.getErrorMessage(err),
+      error: errorHandler.getErrorMessage(err),
     });
   }
 };
 
 const read = (req, res) => {
   console.log("pppppp read");
-
   req.profile.hashed_password = undefined;
   req.profile.salt = undefined;
   return res.json(req.profile);
 };
-
-
 
 const update = async (req, res) => {
   console.log("pppppp update");
@@ -58,7 +54,6 @@ const update = async (req, res) => {
   }
 };
 
-
 const userByID = async (req, res, next, id) => {
     console.log("pppppp userByID");
     try {
@@ -71,7 +66,7 @@ const userByID = async (req, res, next, id) => {
       next();
     } catch (err) {
       return res.status("400").json({
-        error: "Could not retrieve user",
+        error: errorHandler.getErrorMessage(err)
       });
     }
   };
@@ -87,8 +82,7 @@ const remove = async (req, res) => {
   } catch (err) {
     console.log(err)
     return res.status(400).json({
-        
-      // error: errorHandler.getErrorMessage(err),
+      error: errorHandler.getErrorMessage(err),
     });
   }
 };
